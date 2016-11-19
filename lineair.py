@@ -51,6 +51,15 @@ def calculate(f, _schuld, _looptijd):
             lasten = get_decimal(rente + aflossing)
             if _extra_aflossing == '-1':
                 _extra_aflossing = int(schuld)
+            if schuld < 0:
+                schuld = 0
+            if rente < 0:
+                rente = 0
+            if lasten < 0:
+                lasten = 0
+            if aflossing < 0:
+                aflossing = 0
+
             print(
                 '{},{},{:%d-%m-%Y},{},{},{}%,{:.2f},{:.2f},{:.2f},{:.2f},{:.2f},{:.2f}'.format(_extra_aflossing,
                                                                                                _jaar, datum, maand,
