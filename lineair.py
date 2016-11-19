@@ -61,6 +61,9 @@ def calculate(f, _schuld, _looptijd):
                                                                                                schuld_begin_maand,
                                                                                                schuld, lasten))
 
+            if schuld < 1:
+                sys.exit(0)
+
             if _extra_aflossing:
                 extra_aflossing = get_decimal(_extra_aflossing)
                 afgelost += extra_aflossing
@@ -71,9 +74,6 @@ def calculate(f, _schuld, _looptijd):
                 correctie = rente - voor - na
                 schuld -= (get_decimal(extra_aflossing + correctie + _anomaly))
                 aflossing = get_decimal(schuld / (maanden_over - 1))
-
-            if schuld < 1:
-                sys.exit(0)
 
 def get_int(s):
     if s:
