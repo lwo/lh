@@ -31,7 +31,9 @@ def calculate(f, _schuld, _looptijd):
             _datum = get_date(items[0])
             _extra_aflossing = items[1]
             _tarief = get_decimal(items[2])
-            _anomaly = get_decimal(items[3])
+            _schuld = get_decimal(items[3])
+            if _schuld:
+                schuld = schuld
             datum = _datum
             maand += 1
             maanden_over = 1 + looptijd - maand
@@ -81,7 +83,7 @@ def calculate(f, _schuld, _looptijd):
                 rente_correctie = get_decimal(((schuld_begin_maand - extra_aflossing) / 1200) * tarief)
                 na = get_decimal(((float(monthrange - datum.day)) / monthrange) * rente_correctie)
                 correctie = rente - voor - na
-                schuld -= (get_decimal(extra_aflossing + correctie + _anomaly))
+                schuld -= (get_decimal(extra_aflossing + correctie))
                 aflossing = get_decimal(schuld / (maanden_over - 1))
 
 def get_int(s):
@@ -115,7 +117,8 @@ def usage():
 
 
 def main(argv):
-    f = looptijd = schuld = None
+    f = None
+    looptijd = schuld = 0
 
     try:
         opts, args = getopt.getopt(argv, 'f:l:s:h', ['file=', 'schuld=', 'looptijd=', 'help'])
@@ -139,7 +142,6 @@ def main(argv):
 
     assert f
     assert looptijd
-    assert schuld
     calculate(f, schuld, looptijd)
 
 
