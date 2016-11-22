@@ -12,14 +12,14 @@ import getopt
 import sys
 
 
-def calculate(f, _schuld, _looptijd):
-    jaar = 0
+def calculate(f):
     afgelost = 0
-    schuld = _schuld
-    tarief = 0
+    aflossing = 0
+    jaar = 0
+    looptijd = 0
     maand = 0
-    looptijd = _looptijd
-    aflossing = get_decimal(schuld / looptijd)
+    schuld = 0
+    tarief = 0
 
     print(
     'extra_aflossing,jaar,datum,maand,maanden_over,tarief,rente,aflossing,afgelost,schuld_begin_maand,schuld,lasten')
@@ -32,8 +32,12 @@ def calculate(f, _schuld, _looptijd):
             _extra_aflossing = items[1]
             _tarief = get_decimal(items[2])
             _schuld = get_decimal(items[3])
+            _looptijd = get_int(items[4])
+            if _looptijd:
+                looptijd = _looptijd
             if _schuld:
-                schuld = schuld
+                schuld = get_decimal(_schuld)
+                aflossing = get_decimal(schuld / looptijd)
             datum = _datum
             maand += 1
             maanden_over = 1 + looptijd - maand
@@ -113,15 +117,14 @@ def add_months(start_date, months=1):
 
 
 def usage():
-    print('Usage: lineair.py --file [file to csv] --schuld [loan] --looptijd [months]')
+    print('Usage: lineair.py --file [file to csv]')
 
 
 def main(argv):
     f = None
-    looptijd = schuld = 0
 
     try:
-        opts, args = getopt.getopt(argv, 'f:l:s:h', ['file=', 'schuld=', 'looptijd=', 'help'])
+        opts, args = getopt.getopt(argv, 'f:h', ['file=', 'help'])
     except getopt.GetoptError as e:
         print("Opt error: " + e.msg)
         usage()
@@ -132,17 +135,12 @@ def main(argv):
             sys.exit()
         elif opt in ('-f', '--file'):
             f = arg
-        elif opt in ('-s', '--schuld'):
-            schuld = get_decimal(arg)
-        elif opt in ('-l', '--looptijd'):
-            looptijd = int(arg)
         else:
             print("Unknown argument: " + opt)
             sys.exit(1)
 
     assert f
-    assert looptijd
-    calculate(f, schuld, looptijd)
+    calculate(f)
 
 
 if __name__ == '__main__':
