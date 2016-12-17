@@ -1,4 +1,7 @@
 .idea
-*.ods
-*.csv
-*.sh
+/RUNNING_PID
+/logs/
+/project/*-shim.sbt
+/project/project/
+target
+docs

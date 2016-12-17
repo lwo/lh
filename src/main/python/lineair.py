@@ -41,7 +41,7 @@ def calculate(f):
             datum = _datum
             maand += 1
             maanden_over = 1 + looptijd - maand
-            if datum.month == 1 or maand == 1:
+            if maand % 12 == 1:
                 jaar += 1
                 _jaar = str(jaar)
             else:
